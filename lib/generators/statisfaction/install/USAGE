@@ -1,0 +1,10 @@
+Description:
+    Install Statisfaction into your application
+
+Example:
+    rails generate statisfy:install
+
+    This will create:
+       * db/migrate/[timestamp]_create_statisfaction_events.rb
+       * config/initializers/statisfaction.rb
+       * and add a route in your config/routes.rb file
