@@ -3,13 +3,15 @@
 # Require this file using `require "spec_helper.rb"` to ensure that it is only
 # loaded once.
 
-require 'rails'
+require 'rails/all'
 require 'active_record'
 require 'combustion'
+require 'rspec/rails'
 
 Combustion.initialize!
 
 $LOAD_PATH << File.expand_path('../../app/models', __FILE__)
+$LOAD_PATH << File.expand_path('../../app/controllers', __FILE__)
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
