@@ -1,9 +1,6 @@
 module Statisfaction
   extend ActiveSupport::Concern
 
-  class Engine < Rails::Engine
-  end
-
   mattr_reader :viewable_callback
 
   # Module methods
