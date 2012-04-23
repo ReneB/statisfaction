@@ -1,6 +1,6 @@
-module Statisfaction
-  extend ActiveSupport::Concern
+require 'statisfaction/engine'
 
+module Statisfaction
   mattr_reader :viewable_callback
 
   # Module methods
@@ -13,24 +13,22 @@ module Statisfaction
   end
 
   module ClassMethods
-    def statisfier
-      @statisfier ||= Statisfier.new
-    end
-
     def statisfies(&block)
-      statisfier.register_events(self, &block)
+      @statisfier ||= Statisfier.new
 
-      include Statisfaction::InstanceStatisfaction
+      @statisfier.register_events(self, &block)
+
+      include Statisfaction::InstanceMethods
     end
 
     alias_method :statisfy, :statisfies
   end
 
-  module InstanceStatisfaction
+  module InstanceMethods
     def create_statisfaction_event(method_name)
       ::Statisfaction::Event.create
     end
   end
 end
 
-Object.send(:include, Statisfaction)
+Object.send(:extend, Statisfaction::ClassMethods)
