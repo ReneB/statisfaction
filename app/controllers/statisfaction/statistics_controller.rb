@@ -1,2 +1,2 @@
-class Statisfaction::StatisticsController < ApplicationController
+class Statisfaction::StatisticsController < Statisfaction::ApplicationController
 end
