@@ -1,9 +1,8 @@
-require "statisfaction/version"
-require "statisfaction/event"
-require "statisfaction/statisfier"
-
 module Statisfaction
   extend ActiveSupport::Concern
+
+  class Engine < Rails::Engine
+  end
 
   mattr_reader :viewable_callback
 
