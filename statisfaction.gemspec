@@ -12,6 +12,8 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency("rspec", ">= 2.0.0")
   gem.add_development_dependency("rspec-rails", ">= 2.0.0")
+  gem.add_development_dependency("sqlite3")
+  gem.add_development_dependency("combustion")
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

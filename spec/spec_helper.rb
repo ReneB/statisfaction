@@ -5,6 +5,9 @@
 
 require 'rails'
 require 'active_record'
+require 'combustion'
+
+Combustion.initialize!
 
 $LOAD_PATH << File.expand_path('../../app/models', __FILE__)
 
