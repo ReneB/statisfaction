@@ -19,10 +19,6 @@ module Statisfaction
         copy_file "initializer.rb", "config/initializers/statisfaction.rb"
       end
 
-      def generate_routes
-        route %q{match "statisfaction/get(.:format)" => "statisfaction/statistics#get", :as => :get_statisfaction}
-      end
-
       def output
         return unless generating?
 

@@ -24,7 +24,6 @@ To setup Statisfaction in your application:
 
 This process
 * creates a migration,
-* adds a default route that allows you to retrieve collected statistics
 * adds an initializer that denies everybody view access to Statisfaction data:
 ```ruby
   Statisfaction.configure do
