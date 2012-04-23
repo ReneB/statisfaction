@@ -1,7 +1,5 @@
 require "spec_helper"
 
-require "statisfaction"
-
 describe Statisfaction do
   before(:each) do
     class TestSubject

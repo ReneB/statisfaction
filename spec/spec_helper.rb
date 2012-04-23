@@ -10,6 +10,8 @@ require 'rspec/rails'
 
 Combustion.initialize!
 
+require 'statisfaction'
+
 $LOAD_PATH << File.expand_path('../../app/models', __FILE__)
 $LOAD_PATH << File.expand_path('../../app/controllers', __FILE__)
 
