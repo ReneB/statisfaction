@@ -20,7 +20,7 @@ module Statisfaction
       end
 
       def generate_routes
-        route %q{match "statisfaction/get(.:format)" => "statisfaction#get", :as => :get_statisfaction}
+        route %q{match "statisfaction/get(.:format)" => "statisfaction/statistics#get", :as => :get_statisfaction}
       end
 
       def output
