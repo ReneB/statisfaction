@@ -44,6 +44,21 @@ describe Statisfaction do
     it_behaves_like "statisfied methods"
   end
 
+  context "when the methods are declared after statisfying" do
+    before(:each) do
+      class TestSubject
+        statisfy do
+          record :recorded_method
+        end
+
+        def recorded_method ; end
+        def not_recorded_method ; end
+      end
+    end
+
+    it_behaves_like "statisfied methods"
+  end
+
   describe "statifier_defaults" do
     before(:each) do
       class TestSubject

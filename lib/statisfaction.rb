@@ -22,6 +22,12 @@ module Statisfaction
     end
 
     alias_method :statisfy, :statisfies
+
+    def method_added(method_name)
+      @statisfier.new_method_added(method_name) if @statisfier
+
+      super
+    end
   end
 
   module InstanceMethods
