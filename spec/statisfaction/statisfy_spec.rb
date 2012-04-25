@@ -59,6 +59,32 @@ describe Statisfaction do
     it_behaves_like "statisfied methods"
   end
 
+  context "when there are multiple statisfy statements" do
+    before(:each) do
+      class TestSubject
+        def method_1 ; end
+        def method_2 ; end
+
+        statisfy do
+          record :method_1
+        end
+
+        statisfy do
+          record :method_2
+        end
+      end
+    end
+
+    it "should evaluate them all" do
+      [:method_1, :method_2].each do |method|
+        subject.should_receive(:create_statisfaction_event).with(method)
+      end
+
+      subject.method_1
+      subject.method_2
+    end
+  end
+
   describe "statifier_defaults" do
     before(:each) do
       class TestSubject
