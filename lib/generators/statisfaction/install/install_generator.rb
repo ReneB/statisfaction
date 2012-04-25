@@ -19,6 +19,10 @@ module Statisfaction
         copy_file "initializer.rb", "config/initializers/statisfaction.rb"
       end
 
+      def mount_engine
+        route "mount Statisfaction::Engine => '/statisfaction'" if Rails.version > '3.1'
+      end
+
       def output
         return unless generating?
 

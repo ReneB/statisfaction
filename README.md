@@ -146,13 +146,17 @@ you retrieve statistics for the :create and :destroy method on MyClass.
 This path is accessible on the server side as
 
 ```ruby
-get_statisfaction_path( {
+statisfaction.get_path( {
   for: %w{MyClass,create MyClass,destroy},
   start: "2012-01-01",
   end: "2012-05-01",
   granularity: :month
 } )
 ```
+
+#### Note
+
+In Rails 3.0, this path is called 'statisfaction_get_path" instead, since the engine's routes cannot be properly mounted prior to Rails 3.1
 
 #### Parameters
 
