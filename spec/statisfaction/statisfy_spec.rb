@@ -85,16 +85,29 @@ describe Statisfaction do
     end
   end
 
-  describe "statifier_defaults" do
+  describe "statisfaction_defaults" do
     before(:each) do
       class TestSubject
+        include ActiveRecord::Persistence
+
+        def create ; end
+        def update ; end
+        def destroy ; end
+
         statisfy do
-          statisfier_defaults
+          statisfaction_defaults
         end
       end
     end
+
     context "when the class is an ActiveRecord" do
-      it "should record :create, :update, :destroy"
+      [:create, :update, :destroy].each do |method|
+        it "should record :#{method}" do
+          subject.should_receive(:create_statisfaction_event).with(method)
+
+          subject.send(method)
+        end
+      end
     end
   end
 end
