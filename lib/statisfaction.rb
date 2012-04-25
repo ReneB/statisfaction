@@ -1,8 +1,5 @@
 require 'statisfaction/engine'
 
-require "statisfaction/statisfier.rb"
-require "statisfaction/event.rb"
-
 module Statisfaction
   mattr_reader :viewable_callback
 

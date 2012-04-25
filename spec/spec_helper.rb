@@ -2,18 +2,11 @@
 # specs live under a `spec` directory, which RSpec adds to the `$LOAD_PATH`.
 # Require this file using `require "spec_helper.rb"` to ensure that it is only
 # loaded once.
-
-require 'rails/all'
-require 'active_record'
-require 'combustion'
-require 'rspec/rails'
-
+require 'bundler'
+Bundler.require :default, :development
 Combustion.initialize!
-
-require 'statisfaction'
-
-$LOAD_PATH << File.expand_path('../../app/models', __FILE__)
-$LOAD_PATH << File.expand_path('../../app/controllers', __FILE__)
+require 'rails'
+require 'rspec/rails'
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
