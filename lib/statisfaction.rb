@@ -32,7 +32,7 @@ module Statisfaction
 
   module InstanceMethods
     def create_statisfaction_event(method_name)
-      ::Statisfaction::Event.create
+      ::Statisfaction::Event.create(for_class: self.class.name, event_name: method_name)
     end
   end
 end
