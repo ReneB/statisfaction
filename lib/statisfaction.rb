@@ -1,15 +1,9 @@
 require 'statisfaction/engine'
 
 module Statisfaction
-  mattr_reader :viewable_callback
-
   # Module methods
   def self.configure(&block)
     module_eval(&block)
-  end
-
-  def self.viewable_if(&block)
-    @viewable_callback = block
   end
 
   module ClassMethods
