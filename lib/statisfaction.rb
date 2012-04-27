@@ -31,8 +31,14 @@ module Statisfaction
   end
 
   module InstanceMethods
-    def create_statisfaction_event(method_name)
-      ::Statisfaction::Event.create(for_class: self.class.name, event_name: method_name)
+    def create_statisfaction_event(method_name, stored_subject = nil)
+      event_data = {for_class: self.class.name, event_name: method_name}
+
+      if stored_subject.present?
+        event_data[:subject_id] = stored_subject.to_param
+        event_data[:subject_type] = stored_subject.class.name
+      end
+      ::Statisfaction::Event.create(event_data)
     end
   end
 end

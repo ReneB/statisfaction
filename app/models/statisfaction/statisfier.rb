@@ -1,7 +1,7 @@
 module Statisfaction
   class Statisfier < Object
     def initialize
-      @methods_pending_for_recording = []
+      @methods_pending_for_recording = {}
     end
 
     def register_events(klass, &block)
@@ -24,17 +24,19 @@ module Statisfaction
       options = (args.last.is_a? Hash) ? args.pop : {}
 
       args.each do |method_name|
-        register_method_for_recording(method_name)
+        register_method_for_recording(method_name, options)
       end
     end
 
     def new_method_added(method_name)
       return if @disable_method_watcher
 
-      pending_method_name = @methods_pending_for_recording.delete(method_name)
+      return unless @methods_pending_for_recording.has_key?(method_name)
 
-      if pending_method_name.present?
-        register_existing_method_for_recording(pending_method_name)
+      options = @methods_pending_for_recording.delete(method_name)
+
+      if method_name.present?
+        register_existing_method_for_recording(method_name, options)
       end
     end
 
@@ -43,22 +45,24 @@ module Statisfaction
       @klass.ancestors.include?(ActiveRecord::Persistence)
     end
 
-    def register_method_for_recording(method_name)
+    def register_method_for_recording(method_name, options)
       if @klass.instance_methods.include?(method_name)
-        register_existing_method_for_recording(method_name)
+        register_existing_method_for_recording(method_name, options)
       else
-        register_nonexistent_method_for_recording(method_name)
+        register_nonexistent_method_for_recording(method_name, options)
       end
     end
 
-    def register_existing_method_for_recording(method_name)
+    def register_existing_method_for_recording(method_name, options)
       # Aliasing a method triggers :method_added for the original method,
       # since we're already handling that, prevent doing that a second time.
       @disable_method_watcher = true
 
       @klass.class_eval do
         define_method "#{method_name}_with_statisfaction_registration".to_sym do |*method_args|
-          self.create_statisfaction_event(method_name)
+          subject = options[:storing] ? self.send(options[:storing]) : nil
+
+          self.create_statisfaction_event(method_name, subject)
 
           send "#{method_name}_without_statisfaction_registration", *method_args
         end
@@ -69,8 +73,8 @@ module Statisfaction
       @disable_method_watcher = false
     end
 
-    def register_nonexistent_method_for_recording(method_name)
-      @methods_pending_for_recording << method_name
+    def register_nonexistent_method_for_recording(method_name, options)
+      @methods_pending_for_recording[method_name] = options
     end
   end
 end
