@@ -1,5 +1,5 @@
-Statisfaction.configure do
-  viewable_if { false }
+Statisfaction::StatisticsController.configure do
+  usable_if { false }
 end
 
 # by default, deactivate Statisfaction when running automated tests

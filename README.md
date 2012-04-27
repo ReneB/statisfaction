@@ -26,12 +26,13 @@ This process
 * creates a migration,
 * adds an initializer that denies everybody view access to Statisfaction data:
 ```ruby
-  Statisfaction.configure do
-      viewable_if { false }
+  Statisfaction::StatisticsController.configure do
+      usable_if { false }
   end
 ```
 
-  Don't forget to grant access :) The block has access to any instance methods that are present in ApplicationController (and, if you really want it, StatisfactionController).
+  Don't forget to update the initializer to grant access :) The block has access to any instance methods that are present in ApplicationController (and, if you really want it, StatisfactionController).
+
 
 Now run
 
