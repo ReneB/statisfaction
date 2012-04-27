@@ -168,6 +168,41 @@ In Rails 3.0, this path is called 'statisfaction_get_path" instead, since the en
 
 All parameters are mandatory.
 
+### Activating and deactivating Statisfaction
+
+Statisfaction allows permanent and temporary activation and deactivation. When deactivated, no events will be recorded. Deactivation is done by
+
+```ruby
+Statisfaction.deactivate
+```
+
+Likewise, Statisfaction can be (re-)activated using
+
+```ruby
+Statisfaction.activate
+```
+
+To execute small snippets of code without recording events, Statisfaction also provides some methods which accept blocks:
+
+```ruby
+Statisfaction.activate
+# events will be recorded for code placed here...
+Statisfaction.without_statisfaction do
+  # ... but not for code placed here...
+end
+# recording events again...
+Statisfaction.deactivate
+# stopped recording events...
+Statisfaction.with_statisfaction do
+  # recording events again...
+end
+# stopped recording events again.
+```
+
+#### Note
+
+By default, Statisfaction is disabled in Rails test environments to speed up automated tests. This can be changed by editing your application's config/initializers/statisfaction.rb.
+
 ## Contributing
 
 1. Fork it

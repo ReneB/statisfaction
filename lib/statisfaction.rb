@@ -1,6 +1,8 @@
 require 'statisfaction/engine'
+require 'statisfaction/activation_behavior'
 
 module Statisfaction
+  extend ActivationBehavior
   # Module methods
   def self.configure(&block)
     module_eval(&block)

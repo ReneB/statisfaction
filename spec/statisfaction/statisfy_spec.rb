@@ -12,12 +12,31 @@ describe Statisfaction do
   shared_examples_for "statisfied methods" do
     context "when an Object is statisfied" do
       context "when a specified method is called" do
-        it "should store an event" do
-          subject.should_receive(:create_statisfaction_event).with(:recorded_method, nil)
+        context "when Statisfaction is active" do
+          before :each do
+            Statisfaction.stub(:active?).and_return(true)
+          end
 
-          subject.recorded_method
+          it "stores an event" do
+            subject.should_receive(:create_statisfaction_event).with(:recorded_method, nil)
+
+            subject.recorded_method
+          end
+        end
+
+        context "when Statisfaction is deactivated" do
+          before :each do
+            Statisfaction.stub(:active?).and_return(false)
+          end
+
+          it "does not store an event" do
+            subject.should_not_receive(:create_statisfaction_event)
+
+            subject.recorded_method
+          end
         end
       end
+
 
       context "when a subject should be stored" do
         it "should also store the subject" do
