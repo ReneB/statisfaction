@@ -154,6 +154,39 @@ class MyClass
 
 Don't use both :if and :unless in the same record statement. For complex behavior, define a method and use that.
 
+In some cases, you might want to log an event under a different name. The main reason would be recording the same method call under different names.
+
+The example below demonstrates how we handle recording ActiveRecord create/update callsO
+
+```ruby
+class MyClass < ActiveRecord::Base
+  statisfy do
+    record :save, :as => :create, :if => :new_record?
+    record :save, :as => :update, :unless => :new_record?
+  end
+end
+```
+
+Note that the :as-parameter must be unique for each method. In other words, the above statement is valid, as well as this one:
+```ruby
+...
+  statisfy do
+    record :save, :as => :create
+    record :new, :as => :create
+  end
+```
+
+The next statement would be invalid:
+```
+...
+  statisfy do
+    # This is invalid, don't do it!
+
+    # The :if-options are not really relevant but provide an example for why you'd want to do this
+    record :save, :as => :create, :if => :should_log_case_1
+    record :save, :as => :create, :if => :should_log_case_2
+  end
+```
 ### Retrieving statistics
 
 Statisfaction exposes a JSON API which allows you to retrieve statistics from your application.

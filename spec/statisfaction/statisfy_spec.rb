@@ -121,6 +121,30 @@ describe Statisfaction do
     end
   end
 
+  # A use case for this is recording an ActiveRecord create or update,
+  # they both go through #save, but they should be logged under a different
+  # name. This means two logging statements should be added.
+  context "when the same method is specified twice" do
+    before(:each) do
+      class TestSubject
+        statisfy do
+          record :doubly_logged_method, :as => :method_1
+          record :doubly_logged_method, :as => :method_2
+        end
+
+        # Defining the method after :statisfy would seem to be the difficult case
+        def doubly_logged_method ; end
+      end
+    end
+
+    it "should handle them both" do
+      subject.should_receive(:create_statisfaction_event).with(:method_1, anything)
+      subject.should_receive(:create_statisfaction_event).with(:method_2, anything)
+
+      subject.doubly_logged_method
+    end
+  end
+
   context "when a subject should be stored" do
     before(:each) do
       class TestSubject
@@ -214,6 +238,23 @@ describe Statisfaction do
           subject.method
         end
       end
+    end
+  end
+
+  context "when :as is specified" do
+    before(:each) do
+      class TestSubject
+        def method ; end
+
+        statisfy do
+          record :method, :as => :alias
+        end
+      end
+    end
+
+    it "should record the method under the specified name" do
+      subject.should_receive(:create_statisfaction_event).with(:alias, anything)
+      subject.method
     end
   end
 
