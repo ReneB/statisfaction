@@ -62,9 +62,17 @@ module Statisfaction
         define_method "#{method_name}_with_statisfaction_registration".to_sym do |*method_args|
           subject = options[:storing] ? self.send(options[:storing]) : nil
 
+          if options.has_key?(:if)
+            should_record = self.send(options[:if])
+          elsif options.has_key?(:unless)
+            should_record = !self.send(options[:unless])
+          else
+            should_record = true
+          end
+
           result = send "#{method_name}_without_statisfaction_registration", *method_args
 
-          self.create_statisfaction_event(method_name, subject) if Statisfaction.active?
+          self.create_statisfaction_event(method_name, subject) if Statisfaction.active? && should_record
 
           result
         end

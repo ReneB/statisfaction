@@ -134,6 +134,26 @@ class MyClass
 end
 ```
 
+There is support for if/unless statements to regulate when to record events:
+
+```ruby
+class MyClass
+  def should_log
+    false
+  end
+
+  def earth_is_flat
+    false
+  end
+
+  statisfy do
+    record :my_method, :if => :should_log
+    record :my_other_method, :unless => :earth_is_flat
+  end
+```
+
+Don't use both :if and :unless in the same record statement. For complex behavior, define a method and use that.
+
 ### Retrieving statistics
 
 Statisfaction exposes a JSON API which allows you to retrieve statistics from your application.

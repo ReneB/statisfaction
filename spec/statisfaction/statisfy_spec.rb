@@ -143,6 +143,80 @@ describe Statisfaction do
     end
   end
 
+  context "when a condition is specified" do
+    before(:each) do
+      class TestSubject
+        def method ; end
+
+        attr_accessor :condition
+      end
+    end
+
+    context "and it is a if statement" do
+      before(:each) do
+        class TestSubject
+          statisfy do
+            record :method, if: :condition
+          end
+        end
+      end
+
+      context "and it is true" do
+        before(:each) do
+          subject.condition = true
+        end
+
+        it "should record it" do
+          subject.should_receive(:create_statisfaction_event).with(:method, anything)
+          subject.method
+        end
+      end
+
+      context "and it is false" do
+        before(:each) do
+          subject.condition = false
+        end
+
+        it "should not record it" do
+          subject.should_not_receive(:create_statisfaction_event)
+          subject.method
+        end
+      end
+    end
+
+    context "and it is an unless statement" do
+      before(:each) do
+        class TestSubject
+          statisfy do
+            record :method, unless: :condition
+          end
+        end
+      end
+
+      context "and it is true" do
+        before(:each) do
+          subject.condition = true
+        end
+
+        it "should not record it" do
+          subject.should_not_receive(:create_statisfaction_event)
+          subject.method
+        end
+      end
+
+      context "and it is false" do
+        before(:each) do
+          subject.condition = false
+        end
+
+        it "should record it" do
+          subject.should_receive(:create_statisfaction_event).with(:method, anything)
+          subject.method
+        end
+      end
+    end
+  end
+
   describe "statisfaction_defaults" do
     before(:each) do
       class TestSubject
