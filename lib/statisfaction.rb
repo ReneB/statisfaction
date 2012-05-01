@@ -15,15 +15,15 @@ module Statisfaction
       @statisfier.register_events(self, &block)
 
       include Statisfaction::InstanceMethods
+
+      def self.method_added(method_name)
+        @statisfier.new_method_added(method_name) if @statisfier
+
+        super
+      end
     end
 
     alias_method :statisfy, :statisfies
-
-    def method_added(method_name)
-      @statisfier.new_method_added(method_name) if @statisfier
-
-      super
-    end
   end
 
   module InstanceMethods
