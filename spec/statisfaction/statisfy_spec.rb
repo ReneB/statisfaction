@@ -238,6 +238,25 @@ describe Statisfaction do
           subject.method
         end
       end
+
+      it "should check the condition before the method is called" do
+        class TestSubject
+          attr_accessor :should_record
+
+          def disable_record
+            self.should_record = false
+          end
+
+          statisfy do
+            record :disable_record, :if => :should_record
+          end
+        end
+
+        subject.should_receive(:create_statisfaction_event).with(:disable_record, anything)
+
+        subject.should_record = true
+        subject.disable_record
+      end
     end
   end
 
