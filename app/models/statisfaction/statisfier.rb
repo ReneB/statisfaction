@@ -45,9 +45,9 @@ module Statisfaction
     def new_method_added(method_name)
       return if @disable_method_watcher
 
-      return unless @methods_pending_for_recording.has_key?(method_name)
-
       options_collection = @methods_pending_for_recording.delete(method_name)
+
+      return if options_collection.nil?
 
       options_collection.each do |options|
         register_existing_method_for_recording(method_name, options)
