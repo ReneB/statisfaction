@@ -260,6 +260,47 @@ describe Statisfaction do
     end
   end
 
+  context "when recorded method contains a special character" do
+    before(:each) do
+      class TestSubject
+        def logged_method! ; end
+
+        statisfy do
+          record :logged_method!
+        end
+      end
+    end
+
+    it "should still work" do
+      subject.should_receive(:create_statisfaction_event).with(:logged_method!, anything)
+
+      subject.logged_method!
+    end
+  end
+
+  context "when two method names differ only by a special character" do
+    before(:each) do
+      class TestSubject
+        def logged_method ; end
+        def logged_method! ; end
+
+        statisfy do
+          record :logged_method, :logged_method!
+        end
+      end
+    end
+
+    it "should log the 'normal' method correctly" do
+      subject.should_receive(:create_statisfaction_event).with(:logged_method, anything)
+      subject.logged_method
+    end
+
+    it "should log the 'special' method correctly" do
+      subject.should_receive(:create_statisfaction_event).with(:logged_method!, anything)
+      subject.logged_method!
+    end
+  end
+
   context "when :as is specified" do
     before(:each) do
       class TestSubject

@@ -60,23 +60,31 @@ module Statisfaction
 
       @klass.class_eval do
         logged_name = options[:as] || method_name
+        stripped_logged_name = logged_name.to_s.sub(/([?!=])$/, '').to_sym
 
-        feature_name = "statisfaction_registration_as_#{logged_name}"
+        # Put the old method name at the end so we don't have to strip and re-add any
+        # special characters.
+        method_name_ending = "as_#{stripped_logged_name}_on_#{method_name}"
+        without_method = :"statisfy_without_registration_#{method_name_ending}"
+        with_method = :"statisfy_with_registration_#{method_name_ending}"
 
-        define_method "#{method_name}_with_#{feature_name}".to_sym do |*method_args|
-          subject = options[:storing] ? self.send(options[:storing]) : nil
-
+        define_method(with_method) do |*method_args|
           should_record = Statisfaction::Statisfier.should_record?(options, self)
-          result = send "#{method_name}_without_#{feature_name}", *method_args
 
-          if Statisfaction.active? && should_record
+          result = send(without_method, *method_args)
+
+          if should_record
+            subject = options[:storing] ? self.send(options[:storing]) : nil
             self.create_statisfaction_event(logged_name, subject)
           end
 
           result
         end
 
-        alias_method_chain method_name, feature_name.to_sym
+        # alias_method_chain makes things much harder when method names with
+        # special_characters are specified.
+        alias_method without_method, method_name
+        alias_method method_name, with_method
       end
     ensure
       @disable_method_watcher = false
@@ -89,6 +97,8 @@ module Statisfaction
     end
 
     def self.should_record?(options, object)
+      return false unless Statisfaction.active?
+
       return object.send(options[:if]) if options.has_key?(:if)
       return !object.send(options[:unless]) if options.has_key?(:unless)
       return true
