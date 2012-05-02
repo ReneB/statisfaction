@@ -7,7 +7,7 @@ describe Statisfaction::StatisticsController do
   describe :check_access do
     context "when @access_specification does not exist" do
       before(:each) do
-        controller_class.stub(:access_specification).and_return(nil)
+        subject.stub(:access_specification).and_return(nil)
       end
 
       it "is false" do

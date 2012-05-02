@@ -13,7 +13,9 @@ describe Statisfaction::StatisticsController do
     it "should set @@access_specification" do
       block = proc { true }
 
-      Statisfaction::StatisticsController.usable_if &block
+      Statisfaction::StatisticsController.configure do
+        usable_if &block
+      end
 
       Statisfaction::StatisticsController.access_specification.should == block
     end
