@@ -66,14 +66,7 @@ module Statisfaction
         define_method "#{method_name}_with_#{feature_name}".to_sym do |*method_args|
           subject = options[:storing] ? self.send(options[:storing]) : nil
 
-          if options.has_key?(:if)
-            should_record = self.send(options[:if])
-          elsif options.has_key?(:unless)
-            should_record = !self.send(options[:unless])
-          else
-            should_record = true
-          end
-
+          should_record = Statisfaction::Statisfier.should_record?(options, self)
           result = send "#{method_name}_without_#{feature_name}", *method_args
 
           if Statisfaction.active? && should_record
@@ -93,6 +86,12 @@ module Statisfaction
       stored_options = @methods_pending_for_recording[method_name] ||= []
 
       stored_options << options
+    end
+
+    def self.should_record?(options, object)
+      return object.send(options[:if]) if options.has_key?(:if)
+      return !object.send(options[:unless]) if options.has_key?(:unless)
+      return true
     end
   end
 end
