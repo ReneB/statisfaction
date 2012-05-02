@@ -16,7 +16,15 @@ module Statisfaction
     end
 
     def self.dump(obj)
-      "#{obj.watched_class},#{obj.watched_activity}"
+      obj.dump
+    end
+
+    def dump
+      to_param
+    end
+
+    def to_param
+      "#{watched_class},#{watched_activity}"
     end
 
     attr_reader :watched_class, :watched_activity

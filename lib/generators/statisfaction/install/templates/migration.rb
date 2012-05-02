@@ -3,8 +3,7 @@
 class CreateStatisfactionEvents < ActiveRecord::Migration
   def self.<%= method_name %>
     create_table :statisfaction_events do |t|
-      t.string :for_class
-      t.string :event_name
+      t.string :stored_activity
 
       t.string :subject_id
       t.string :subject_type

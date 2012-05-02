@@ -28,13 +28,17 @@ module Statisfaction
 
   module InstanceMethods
     def create_statisfaction_event(method_name, stored_subject = nil)
-      event_data = {for_class: self.class.name, event_name: method_name}
+      event_data = {}
 
       if stored_subject.present?
         event_data[:subject_id] = stored_subject.to_param
         event_data[:subject_type] = stored_subject.class.name
       end
-      ::Statisfaction::Event.create(event_data)
+
+      Statisfaction::Event.new(event_data).tap do |e|
+        e.activity = { class: self.class, activity: method_name }
+        e.save
+      end
     end
   end
 end

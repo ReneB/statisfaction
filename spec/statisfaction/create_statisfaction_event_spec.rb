@@ -27,7 +27,7 @@ describe Statisfaction do
       describe "the stored event" do
         subject { TestSubject.new.create_statisfaction_event(:event) }
 
-        its(:for_class) { should == TestSubject.name }
+        its(:for_class) { should == TestSubject }
         its(:event_name) { should == :event }
 
         # No subject is given
