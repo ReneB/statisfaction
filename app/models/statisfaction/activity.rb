@@ -11,6 +11,14 @@ module Statisfaction
       self.watched_class == other.watched_class && self.watched_activity == other.watched_activity
     end
 
+    def self.load(serialized)
+      self.new *(serialized.split(','))
+    end
+
+    def self.dump(obj)
+      "#{obj.watched_class},#{obj.watched_activity}"
+    end
+
     attr_reader :watched_class, :watched_activity
     protected
     attr_writer :watched_class, :watched_activity
