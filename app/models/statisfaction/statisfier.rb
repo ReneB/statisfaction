@@ -16,8 +16,22 @@ module Statisfaction
 
     def statisfaction_defaults
       if is_active_record?
-        record :create, :update, :destroy
+        ar_create
+        ar_update
+        ar_destroy
       end
+    end
+
+    def ar_create
+      record :save, :as => :create, :if => :new_record?
+    end
+
+    def ar_update
+      record :save, :as => :update, :unless => :new_record?
+    end
+
+    def ar_destroy
+      record :destroy
     end
 
     def record(*args)

@@ -81,6 +81,18 @@ class MyAR < ActiveRecord::Base
 end
 ```
 
+You can specify them separately with:
+
+```ruby
+class MyAR < ActiveRecord::Base
+  statisfy do
+    ar_create
+    ar_update
+    ar_destroy
+  end
+end
+```
+
 The second form also allows collecting other methods in addition to the defaults:
 ```ruby
 class MyAR < ActiveRecord::Base
