@@ -3,14 +3,14 @@ require "spec_helper"
 describe Statisfaction::StatisticsController do
   describe :usable_if do
     before(:each) do
-      @old_value = Statisfaction::StatisticsController.class_variable_get(:@@access_specification)
+      @old_value = Statisfaction::StatisticsController.send(:access_specification)
     end
 
     after(:each) do
-      Statisfaction::StatisticsController.class_variable_set(:@@access_specification, @old_value)
+      Statisfaction::StatisticsController.send(:access_specification=, @old_value)
     end
 
-    it "should set @@access_specification" do
+    it "should store the access specifier" do
       block = proc { true }
 
       Statisfaction::StatisticsController.configure do
