@@ -1,5 +1,6 @@
 require 'statisfaction/engine'
 require 'statisfaction/activation_behavior'
+require 'statisfaction/statisfier'
 
 module Statisfaction
   extend ActivationBehavior
