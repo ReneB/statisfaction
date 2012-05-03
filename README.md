@@ -269,6 +269,10 @@ end
 
 By default, Statisfaction is disabled in Rails test environments to speed up automated tests. This can be changed by editing your application's config/initializers/statisfaction.rb.
 
+## Note
+
+Statisfaction will not work with SQLite, since it does not support queries like 'GROUP BY MONTH(created_at)'
+
 ## Contributing
 
 1. Fork it
