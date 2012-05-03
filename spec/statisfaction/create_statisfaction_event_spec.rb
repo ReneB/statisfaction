@@ -31,21 +31,23 @@ describe Statisfaction do
         its(:event_name) { should == :event }
 
         # No subject is given
-        its(:subject_id) { should == nil }
-        its(:subject_type) { should == nil }
+        its(:subject) { should == nil }
       end
     end
 
     context "when a subject is given" do
-      describe "the stored event" do
-        let(:identifier) { "identifier" }
+      let(:stored_subject) { mock('stored_subject') }
 
-        let(:stored_subject) { mock('stored_subject', to_param: identifier) }
+      before(:each) do
+        @mock_event = mock('event', :activity= => nil, :subject= => nil, :save => nil)
 
-        subject { TestSubject.new.create_statisfaction_event(:event, stored_subject) }
+        Statisfaction::Event.stub(:new).and_return(@mock_event)
+      end
 
-        its(:subject_id) { should == identifier }
-        its(:subject_type) { should == stored_subject.class.name }
+      it "should store the subject" do
+        @mock_event.should_receive(:subject=).with(stored_subject)
+
+        TestSubject.new.create_statisfaction_event(:event, stored_subject)
       end
     end
   end

@@ -1,6 +1,7 @@
 require 'statisfaction/engine'
 require 'statisfaction/activation_behavior'
 require 'statisfaction/statisfier'
+require 'statisfaction/errors'
 
 module Statisfaction
   extend ActivationBehavior
@@ -31,13 +32,11 @@ module Statisfaction
     def create_statisfaction_event(method_name, stored_subject = nil)
       event_data = {}
 
-      if stored_subject.present?
-        event_data[:subject_id] = stored_subject.to_param
-        event_data[:subject_type] = stored_subject.class.name
-      end
-
       Statisfaction::Event.new(event_data).tap do |e|
         e.activity = { class: self.class, activity: method_name }
+
+        e.subject = stored_subject if stored_subject.present?
+
         e.save
       end
     end
