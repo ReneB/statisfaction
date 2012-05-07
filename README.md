@@ -30,6 +30,7 @@ This process
       usable_if { false }
   end
 ```
+* adds a route to the engine if the current Rails version is >= 3.1
 
   Don't forget to update the initializer to grant access :) The block has access to any instance methods that are present in ApplicationController (and, if you really want it, StatisfactionController).
 
