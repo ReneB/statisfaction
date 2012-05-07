@@ -4,17 +4,30 @@ module Statisfaction
   class Event < ActiveRecord::Base
     set_table_name "statisfaction_events"
 
+    scope :for_activities, lambda { |*activities|
+      self.where(stored_activity: Statisfaction::Activities(*activities).map(&:to_param))
+    }
+
+    scope :after, lambda { |start_date|
+      where("#{Statisfaction::Event.table_name}.created_at > :start_date", start_date: start_date)
+    }
+
+    scope :before, lambda { |end_date|
+      where("#{Statisfaction::Event.table_name}.created_at < :end_date", end_date: end_date)
+    }
+
+    scope :for_subject, lambda { |subject|
+      where(subject_id: subject.to_param, subject_type: (subject.nil? ? nil : subject.class.name))
+    }
+
+    scope :grouped_by_activity, group(:stored_activity)
+
     def activity=(*args)
       self.stored_activity = Statisfaction::Activity(*args).dump
     end
 
     def activity
       Statisfaction::Activity(stored_activity)
-    end
-
-    def self.for_activities(*activities)
-      params = Statisfaction::Activities(*activities).map(&:to_param)
-      self.where stored_activity: params
     end
 
     def subject=(subject)

@@ -202,6 +202,28 @@ The next statement would be invalid:
 ```
 ### Retrieving statistics
 
+#### Model layer
+
+Statisfaction allows tables to be extracted from the recorded data. To get a table of the MyClass#my_method calls that occurred between 3 and 2 months ago, counted by month, you would use the following call:
+
+```ruby
+table = Statisfaction::Table.for(MyClass, :my_method).from(3.months.ago).to(2.months.ago).by(:month)
+```
+
+Calling #rows on this table provides you with an array of arrays, where each of the level-2 arrays is a table row.
+* Each column contains the data for a different event type (except the first, which contains the date labels)
+* Each row contains the data for a different month (except the first, which contains the event-type labels)
+
+For example:
+
+```ruby
+table.rows
+
+=> [["month", "MyClass,my_method"], [Sun, 01 Apr 2012 00:00:00 +0000, 12]]
+```
+
+#### Controller layer
+
 Statisfaction exposes a JSON API which allows you to retrieve statistics from your application.
 
 By default, by issuing a GET request like
