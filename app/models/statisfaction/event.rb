@@ -2,7 +2,7 @@ require 'statisfaction/activity'
 
 module Statisfaction
   class Event < ActiveRecord::Base
-    set_table_name "statisfaction_events"
+    self.table_name = "statisfaction_events"
 
     scope :for_activities, lambda { |*activities|
       self.where(stored_activity: Statisfaction::Activities(*activities).map(&:to_param))
