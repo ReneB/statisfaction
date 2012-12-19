@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gem 'rails'
 
 group :development do
-  gem 'combustion', git: 'git://github.com/freelancing-god/combustion.git', branch: 'master'
+  gem 'combustion', git: 'git://github.com/pat/combustion.git', branch: 'master'
 end
 
 gemspec
